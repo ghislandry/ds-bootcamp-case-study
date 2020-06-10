@@ -77,3 +77,22 @@ def load_data():
                                                      'Senior')))
     df['Creditability'] = df['Creditability'].apply(lambda x: 'Good' if x == 1 else 'Bad')
     return df
+
+
+
+
+
+
+
+def plot_marginal_distribution(data, var1='AgeGroups', var2='Creditability', title=''):
+    """
+    Plot the marginal conditional distribution of var1,
+    with respect to var2
+    """
+    Y = pd.crosstab(data[var1], data[var2], margins=True, margins_name='Total')
+    for value in data[var2].unique():
+        Y[value] = Y[value]*100/Y.loc['Total', value]
+
+    P = Y.drop(columns=['Total']).transpose().copy()
+    P.drop(columns=['Total'], inplace=True)
+    P.plot.bar(stacked=True, figsize=(8, 6), title=title)
