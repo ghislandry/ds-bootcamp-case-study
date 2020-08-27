@@ -96,3 +96,48 @@ def plot_marginal_distribution(data, var1='AgeGroups', var2='Creditability', tit
     P = Y.drop(columns=['Total']).transpose().copy()
     P.drop(columns=['Total'], inplace=True)
     P.plot.bar(stacked=True, figsize=(8, 6), title=title)
+
+
+
+def pre_process_data(data):
+    """
+    load the data and process it as indicated above
+    """
+
+    df = data[[x for x in COLUMNS_OF_INTEREST if x not in ['Creditability']]].copy()
+    df.rename(columns={'Payment Status of Previous Credit': 'Payment Status',
+                       'No of Credits at this Bank': 'NumberCredits',
+                       'Length of current employment': 'Employment Length',
+                       'Value Savings/Stocks': 'Savings/Stock Value'}, inplace=True)
+
+    df['Account Balance'] = df['Account Balance'].apply(lambda x: 'NoAccount'
+                                                        if x == 1 else ('NoBalance' if x == 2 else
+                                                                        'SomeBalance'))
+    df['Payment Status'] = df['Payment Status'].apply(lambda x: 'SomeProblems'
+                                                      if x == 1 else('PaidUp' if x == '2' else 'NoProblem'))
+    df['Savings/Stock Value'] = df['Savings/Stock Value'].apply(lambda x: 'NoSavings'
+                                                                if x == 1 else ('BellowHundred' if x == 2
+                                                                               else ('AboveThousand'
+                                                                                     if x == 5 else 'Other')))
+    df['Employment Length'] = df['Employment Length'].apply(lambda x: 'BellowOneYear'
+                                                            if x in [1, 2] else('OneToFour'
+                                                                                if x == 3 else
+                                                                                ('FourToSevent'
+                                                                                 if x == 4 else 'AboveSevent')))
+    df['Sex & Marital Status'] = df['Sex & Marital Status'].apply(lambda x: 'MaleSingle'
+                                                                  if x in [1, 2] else ('MaleMarried'
+                                                                                       if x == 3 else 'Female'))
+    df['NumberCredits'] = df['NumberCredits'].apply(lambda x: 'One' if x == 1 else 'OnePlus')
+    df['Guarantors'] = df['Guarantors'].apply(lambda x: 'No' if x == 1 else 'Yes')
+    df['Concurrent Credits'] = df['Concurrent Credits'].apply(lambda x: 'NoCredit' if x == 3 else 'OtherBanks')
+    df['Purpose'] = df['Purpose'].apply(lambda x: 'NewCar'
+                        if x == 1 else ('UsedCar' if x == 2 else ('HouseRelated' if x in [3, 4, 5, 6] else
+                                                                  'Other')))
+    df['AgeGroups'] = df['Age (years)'].apply(lambda x:
+                                             'Young' if x in range(0, 26) else (
+                                                 'MidAgeAdult' if x in range(26, 40) else (
+                                                     'OldAdult' if x in range(40, 60) else
+                                                     'Senior')))
+    #if 'Creditability' in df.columns:
+    #    df['Creditability'] = df['Creditability'].apply(lambda x: 'Good' if x == 1 else 'Bad')
+    return df
