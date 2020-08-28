@@ -1,0 +1,3 @@
+outs:
+- md5: 716287c23be91d752ab89640a98fa8bd
+  path: credit_model.pkl
