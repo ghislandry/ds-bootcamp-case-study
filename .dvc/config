@@ -1,4 +1,6 @@
 [core]
-    remote = storage
+    remote = localstorage
 ['remote "storage"']
     url = s3://ds-bootcamp/dvc-storage
+['remote "localstorage"']
+    url = C:/Users/GHISLA~1/AppData/Local/Temp/dvc-storage
