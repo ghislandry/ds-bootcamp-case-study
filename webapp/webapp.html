@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1"/>
+  <script>
+    "use strict";
+
+    function submitForm(oFormElement) {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        document.getElementById("response").innerHTML = xhr.response;
+      } // success case
+      xhr.onerror = function() {
+        document.getElementById("response").innerHTML = xhr.response;
+      } // failure case
+      xhr.open(oFormElement.method, oFormElement.action, true);
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.send(JSON.stringify(Object.fromEntries(new FormData(oFormElement))));
+      return false;
+    }
+
+  </script>
+</head>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Create two equal columns that floats next to each other */
+  .column {
+    float: left;
+    padding: 10px;
+  }
+
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+</style>
+</head>
+<body>
+
+<h2>Credit Assessment System </h2>
+<form method="post" action="http://127.0.0.1:5000/api/v1/credit-rating" enctype='application/json' onsubmit="return submitForm(this);">
+
+  <div class="row">
+    <div class="column">
+
+      <label for="Age (years)">Age (years)</label>
+      <input type="number" name="Age (years)" min="20" max="80">
+      <br>
+      <br>
+      <label for="Account Balance">Account Balance</label>
+      <select id="Account Balance" name="Account Balance">
+        <option value=1> no running account </option>
+        <option value=2>no balance or debit</option>
+        <option value=3>0 <= ... < 200 DM</option>
+        <option value=4>... >= 200 DM or checking account for at least 1 year</option>
+      </select>
+      <br>
+      <br>
+      <label for="Payment Status of Previous Credit">Payment Status of Previous Credit</label>
+      <select id="Payment Status of Previous Credit" name="Payment Status of Previous Credit">
+        <option value=0>hesitant payment of previous credits</option>
+        <option value=1>problematic running account / there are further credits running but at other banks</option>
+        <option value=2>no previous credits / paid back all previous credits</option>
+        <option value=3>no problems with current credits at this bank</option>
+        <option value=4>paid back previous credits at this bank</option>
+      </select>
+      <br>
+      <br>
+
+      <label for="Value Savings/Stocks">Value Savings/Stocks</label>
+      <select id="Value Savings/Stocks" name="Value Savings/Stocks">
+        <option value=1>not available / no savings</option>
+        <option value=2>< 100 DM</option>
+        <option value=3>100 <= ... < 500 DM</option>
+        <option value=4>500 <= ... < 1000 DM</option>
+        <option value=5>>= 1000 DM</option>
+      </select>
+      <br>
+      <br>
+
+      <label for="Length of current employment">Length of current employment</label>
+      <select id="Length of current employment" name="Length of current employment">
+        <option value=1>unemployed</option>
+        <option value=2><= 1 year</option>
+        <option value=3>1 <= ... < 4 years</option>
+        <option value=4>4 <= ... < 7 years</option>
+        <option value=5>>= 7 years</option>
+      </select>
+      <br>
+      <br>
+      <label for="Sex & Marital Status">Sex & Marital Status</label>
+      <select id="Sex & Marital Status" name="Sex & Marital Status">
+        <option value=1>male: divorced / living apart</option>
+        <option value=2>male: single</option>
+        <option value=3>male: married / widowed</option>
+        <option value=4>female</option>
+      </select>
+
+      <br>
+      <br>
+      <label for="No of Credits at this Bank">No of Credits at this Bank</label>
+      <select id="No of Credits at this Bank" name="No of Credits at this Bank">
+        <option value=1>one</option>
+        <option value=2>two or three</option>
+        <option value=3>four or five</option>
+        <option value=3>six or more</option>
+      </select>
+
+      <br>
+      <br>
+      <label for="Guarantors">Guarantors</label>
+      <select id="Guarantors" name="Guarantors">
+        <option value=1>none</option>
+        <option value=2>Co-Applicant</option>
+        <option value=3>Guarantor</option>
+      </select>
+
+      <br>
+      <br>
+      <label for="Concurrent Credits">Concurrent Credits</label>
+      <select id="Concurrent Credits" name="Concurrent Credits">
+        <option value=1>at other banks</option>
+        <option value=2>at department store or mail order house</option>
+        <option value=3>no further running credits</option>
+      </select>
+
+      <br>
+      <br>
+      <label for="Purpose">Purpose</label>
+      <select id="Purpose" name="Purpose">
+        <option value=1>new car</option>
+        <option value=2>used car</option>
+        <option value=3>items of furniture</option>
+        <option value=4>radio / television</option>
+        <option value=5>household appliances</option>
+        <option value=6>repair</option>
+        <option value=7>education</option>
+        <option value=8>vacation</option>
+        <option value=9>retraining</option>
+        <option value=10>business</option>
+        <option value=0>others</option>
+      </select>
+
+    </div>
+
+  </div>
+  <input type="submit" value="Submit">
+  <p id="response"></p>
+
+</form>
+
+</body>
+</html>
