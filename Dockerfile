@@ -3,12 +3,15 @@ FROM python:3.6-slim
 COPY ./webservice /webservice
 
 COPY docker-requirements.txt /webservice
+COPY logging.conf /logging.conf
 
 # Updating the machine
+
 
 # updating the machine
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 RUN apt-get install build-essential -y
+RUN apt-get install python3.5 -y
 RUN apt-get install python3-pip -y
 
 
